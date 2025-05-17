@@ -16,50 +16,64 @@
 <body class="bg-white text-gray-800">
 
   <!-- Top Header -->
-  <header class="bg-green-600 text-white">
-    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 flex-wrap gap-4">
-      
-      <!-- Logo -->
-      <div class="text-2xl font-bold">
-        <span class="text-white">Agri</span><span class="text-green-900">Hub</span>
-      </div>
+<!-- Header -->
+<header class="bg-green-600 text-white">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 flex-wrap gap-4">
 
-      <!-- Navigation -->
-      <nav class="hidden md:flex space-x-6 text-white font-medium">
-        <a href="#" class="hover:text-green-200">Home</a>
-        <a href="#" class="hover:text-green-200">Products</a>
-        <a href="#" class="hover:text-green-200">Categories</a>
-        <a href="#" class="hover:text-green-200">About</a>
-      </nav>
+    <!-- Logo -->
+    <div class="text-2xl font-bold">
+      <span class="text-white">Agri</span><span class="text-green-900">Hub</span>
+    </div>
 
-      <!-- Icons -->
-      <div class="flex items-center space-x-4 text-white text-xl">
-        <i class="fas fa-user-circle hover:text-green-200 cursor-pointer"></i>
-        <i class="fas fa-bell hover:text-green-200 cursor-pointer"></i>
-        <i class="fas fa-shopping-cart hover:text-green-200 cursor-pointer"></i>
+    <!-- Navigation -->
+    <nav class="hidden md:flex space-x-6 font-medium">
+      <a href="#" class="hover:text-green-200">Home</a>
+      <a href="#" class="hover:text-green-200">Products</a>
+      <a href="#" class="hover:text-green-200">Categories</a>
+      <a href="#" class="hover:text-green-200">About</a>
+    </nav>
+
+    <!-- Icons -->
+    <div class="flex items-center space-x-4 text-xl">
+      <i class="fas fa-bolt hover:text-green-200 cursor-pointer" title="Shortcut"></i>
+      <i class="fas fa-user-circle hover:text-green-200 cursor-pointer" title="Profile"></i>
+      <i class="fas fa-bell hover:text-green-200 cursor-pointer" title="Notifications"></i>
+      <i class="fas fa-shopping-cart hover:text-green-200 cursor-pointer" title="Cart"></i>
+    </div>
+  </div>
+</header>
+
+<!-- Search and Filter Bar -->
+<section class="bg-gray-100 border-t border-b">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-stretch md:items-center gap-4">
+
+    <!-- Filter Dropdown -->
+    <div class="w-full md:w-auto">
+      <label for="filter" class="sr-only">Filter</label>
+      <div class="relative">
+        <select id="filter" name="filter" class="appearance-none w-full md:w-48 px-4 py-2 pr-10 bg-white border border-green-300 rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+          <option selected>All Products</option>
+          <option>Fertilizers</option>
+          <option>Seeds</option>
+          <option>Equipment</option>
+          <option>Tools</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-green-600">
+          <i class="fas fa-sliders-h"></i>
+        </div>
       </div>
     </div>
-  </header>
 
-  <!-- Search and Filter Bar -->
-  <section class="bg-gray-100 border-t border-b">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-stretch md:items-center gap-4">
-
-      <!-- Filter -->
-      <button class="w-full md:w-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-        <i class="fas fa-sliders-h mr-2"></i> Filter
-      </button>
-
-      <!-- Search -->
-      <div class="flex-1">
-        <input 
-          type="text" 
-          placeholder="Search our products..." 
-          class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" 
-        />
-      </div>
+    <!-- Search Bar -->
+    <div class="flex-1">
+      <input 
+        type="text" 
+        placeholder="Search our products..." 
+        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500" 
+      />
     </div>
-  </section>
+  </div>
+</section>
 
   <section class="relative flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-4 py-20 gap-12">
 
