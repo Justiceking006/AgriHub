@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AgriHub Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            farmGreen: '#1B5E20',
+            farmYellow: '#FFC107',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .slide-left-enter {
+      transform: translateX(-100%);
+    }
+    .slide-left-enter-active {
+      transform: translateX(0);
+      transition: transform 0.3s ease-in-out;
+    }
+    .slide-left-leave {
+      transform: translateX(0);
+    }
+    .slide-left-leave-active {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 relative">  <!-- HEADER -->  <header class="w-full shadow-md fixed top-0 left-0 bg-white z-50">
+    <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <!-- Logo / Site Name -->
+      <div class="text-2xl font-bold text-farmGreen">
+        Agri <span style="color:#FFF212;">Hub</span>
+      </div>
+      <!-- Desktop Nav Items -->
+      <div class="hidden md:flex space-x-6 text-lg">
+        <a href="#" class="hover:text-farmGreen transition">Home</a>
+        <a href="#" class="hover:text-farmGreen transition">Product</a>
+        <a href="#" class="hover:text-farmGreen transition">Contact</a>
+      </div>
+      <!-- Right Side -->
+      <div class="hidden md:flex items-center space-x-4">
+        <a href="/downloads/agrihub-app.apk" download class="bg-farmYellow text-white px-4 py-2 rounded hover:bg-yellow-500 transition">
+          Get App
+        </a>
+        <a href="/login" class="text-farmGreen font-medium hover:underline">
+          Sign In
+        </a>
+      </div>
+      <!-- Hamburger (Mobile) -->
+      <button class="md:hidden text-2xl text-farmGreen" onclick="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </nav>
+  </header>  <!-- MOBILE MENU (Sliding Panel) -->  <div id="mobileMenu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-40">
+    <div class="p-6 space-y-4 text-lg pt-20">
+      <a href="#" class="block text-farmGreen hover:text-farmYellow transition">Home</a>
+      <a href="#" class="block text-farmGreen hover:text-farmYellow transition">Product</a>
+      <a href="#" class="block text-farmGreen hover:text-farmYellow transition">Contact</a>
+      <hr class="my-2">
+      <a href="/downloads/agrihub-app.apk" download class="block bg-farmYellow text-white px-4 py-2 rounded hover:bg-yellow-500 transition">
+        Get App
+      </a>
+      <a href="/login" class="block text-farmGreen font-medium hover:underline">
+        Sign In
+      </a>
+    </div>
+  </div>  <!-- Overlay -->  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden" onclick="toggleMenu()"></div>  <!-- Products Section -->  <section class="mt-12 pt-24 px-4">
+    <h2 class="text-3xl font-bold mb-6 text-center">Explore Our <span class="font-light">Products</span></h2>
+    <div class="flex flex-col md:flex-row gap-8">
+      <!-- Sidebar -->
+      <aside class="w-full md:w-1/4 bg-gray-100 p-4 rounded shadow">
+        <h3 class="text-xl font-semibold mb-4 text-farmGreen">Filter by Category</h3>
+        <select id="categoryFilter" class="w-full p-2 rounded border border-gray-300">
+          <option value="all">All</option>
+          <option value="seedlings">Seedlings</option>
+          <option value="grains">Grains</option>
+          <option value="tubers">Tubers</option>
+          <option value="others">Other Farm Products</option>
+        </select>
+      </aside>
+      <!-- Product Grid -->
+      <div class="w-full md:w-3/4 grid grid-cols-2 sm:grid-cols-3 gap-6" id="productGrid">
+        <!-- Products injected by JS -->
+      </div>
+    </div>
+  </section>  <!-- Footer -->  <footer class="bg-gray-100 mt-20 pt-10 pb-6 border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-700">
+      <div>
+        <h3 class="text-2xl font-bold mb-3">
+          <span class="text-green-600">Agri</span><span style="color: #FFF212;">Hub</span>
+        </h3>
+        <p>Your trusted platform for agro-chemicals, livestock, tools, and planting materials. Empowering farmers across Nigeria.</p>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-3">Quick Links</h4>
+        <ul class="space-y-2">
+          <li><a href="index.html" class="hover:text-green-600 transition">Home</a></li>
+          <li><a href="about.html" class="hover:text-green-600 transition">About Us</a></li>
+          <li><a href="products.html" class="hover:text-green-600 transition">Products</a></li>
+          <li><a href="blog.html" class="hover:text-green-600 transition">Blog</a></li>
+          <li><a href="contact.html" class="hover:text-green-600 transition">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-3">Contact</h4>
+        <ul class="space-y-2">
+          <li>Email: support@agriahub.com</li>
+          <li>Phone: +234 800 123 4567</li>
+          <li>Location: Lagos, Nigeria</li>
+          <li class="mt-2">
+            <div class="flex space-x-3">
+              <a href="#" class="text-gray-500 hover:text-green-600">FB</a>
+              <a href="#" class="text-gray-500 hover:text-green-600">TW</a>
+              <a href="#" class="text-gray-500 hover:text-green-600">IG</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-10 text-xs text-gray-500">
+      &copy; 2025 <span class="text-green-600">Agria</span><span style="color: #FFF212;">Hub</span>. All rights reserved.
+    </div>
+  </footer>  <script>
+    const products = [
+      { name: 'Hybrid Maize Seeds', image: 'images/maize-seeds.jpg', price: '₦15,000', category: 'grains' },
+      { name: 'Knapsack Sprayer', image: 'images/sprayer.jpg', price: '₦25,000', category: 'others' },
+      { name: 'Organic Fertilizer', image: 'images/fertilizer.jpg', price: '₦10,000', category: 'others' },
+      { name: 'Poultry Drinkers', image: 'images/drinkers.jpg', price: '₦7,500', category: 'others' },
+      { name: 'Cocoa Seedlings', image: 'images/cocoa.jpg', price: '₦500', category: 'seedlings' },
+      { name: 'Tomato Hybrid Seeds', image: 'images/tomato.jpg', price: '₦12,000', category: 'seedlings' }
+    ];
+
+    const grid = document.getElementById('productGrid');
+    const filter = document.getElementById('categoryFilter');
+
+    function displayProducts(category) {
+      grid.innerHTML = '';
+      const filtered = category === 'all' ? products : products.filter(p => p.category === category);
+
+      filtered.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow hover:shadow-lg transform hover:scale-105 transition-all duration-300';
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" class="w-full h-32 object-contain p-4">
+          <div class="px-4 pb-4">
+            <p class="text-sm font-semibold mb-1">${product.name}</p>
+            <p class="text-green-600 text-sm font-bold mb-2">${product.price}</p>
+            <a href="category.html?type=${product.category}" class="text-farmGreen underline">More</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    filter.addEventListener('change', e => displayProducts(e.target.value));
+    displayProducts('all');
+  </script>  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("mobileMenu");
+      const overlay = document.getElementById("overlay");
+      if (menu.classList.contains("-translate-x-full")) {
+        menu.classList.remove("-translate-x-full");
+        overlay.classList.remove("hidden");
+      } else {
+        menu.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
+      }
+    }
+  </script></body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriHub Blog</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            farmGreen: '#1B5E20',
+            farmYellow: '#FFF212',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white text-gray-800 pt-20">
+  <!-- Blog Hero Section -->
+  <section class="bg-farmGreen text-white py-20 text-center">
+    <h1 class="text-4xl font-bold">Agri <span style="color:#FFF212">Hub</span> Blog</h1>
+    <p class="text-lg mt-2">Insights, Tips & Stories for Every Farmer</p>
+  </section>  <!-- Blog Posts -->  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div id="blog-container" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <!-- Blog cards injected by JS -->
+    </div>
+  </section>  <script>
+    const blogs = [
+      {
+        title: '5 Essential Tools Every Farmer Needs',
+        image: 'images/tools.jpg',
+        excerpt: 'Explore the must-have farming tools that boost productivity and ease manual labor...',
+        link: '#'
+      },
+      {
+        title: 'How to Maximize Crop Yield with Organic Methods',
+        image: 'images/organic.jpg',
+        excerpt: 'Organic farming methods can significantly increase yield. Here’s how to do it right...',
+        link: '#'
+      },
+      {
+        title: 'Seed Selection Tips for the Rainy Season',
+        image: 'images/seeds.jpg',
+        excerpt: 'Choosing the right seeds is crucial for rainy season farming. We explain why...',
+        link: '#'
+      }
+    ];
+
+    const blogContainer = document.getElementById('blog-container');
+
+    blogs.forEach(blog => {
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition';
+      card.innerHTML = `
+        <img src="${blog.image}" alt="${blog.title}" class="w-full h-48 object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-semibold text-farmGreen mb-2">${blog.title}</h3>
+          <p class="text-gray-600 text-sm mb-4">${blog.excerpt}</p>
+          <a href="${blog.link}" class="text-farmGreen font-semibold hover:underline">Read More</a>
+        </div>
+      `;
+      blogContainer.appendChild(card);
+    });
+  </script></body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AgriHub Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
+    window.createClient = supabase.createClient;
+  </script>
+  <script src="auth.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            farmGreen: '#1B5E20',
+            farmYellow: '#FFC107',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .slide-left-enter {
+      transform: translateX(-100%);
+    }
+    .slide-left-enter-active {
+      transform: translateX(0);
+      transition: transform 0.3s ease-in-out;
+    }
+    .slide-left-leave {
+      transform: translateX(0);
+    }
+    .slide-left-leave-active {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 relative">
+
+  <!-- HEADER -->
+  <header class="w-full shadow-md fixed top-0 left-0 bg-white z-50">
+    <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+      
+      <!-- Logo / Site Name -->
+      <div class="text-2xl font-bold text-farmGreen">
+        Agri <span style="color:#FFF212;">Hub</span>
+      </div>
+
+      <!-- Desktop Nav Items -->
+      <div class="hidden md:flex space-x-6 text-lg">
+        <a href="#" class="hover:text-farmGreen transition">Home</a>
+        <a href="#" class="hover:text-farmGreen transition">Product</a>
+        <a href="#" class="hover:text-farmGreen transition">Contact</a>
+      </div>
+
+      <!-- Right Side -->
+      <div class="hidden md:flex items-center space-x-4">
+        <a href="/downloads/agrihub-app.apk" download class="bg-farmYellow text-white px-4 py-2 rounded hover:bg-yellow-500 transition">
+          Get App
+        </a>
+        <a href="login.html" class="text-farmGreen font-medium hover:underline auth-button" data-auth="signin">
+          Sign In
+        </a>
+        <a href="signup.html" class="text-farmGreen font-medium hover:underline auth-button" data-auth="signin">
+          Sign Up
+        </a>
+        <button onclick="signOut()" class="text-farmGreen font-medium hover:underline auth-button" data-auth="signout" style="display: none;">
+          Sign Out
+        </button>
+      </div>
+
+      <!-- Hamburger (Mobile) -->
+      <button class="md:hidden text-2xl text-farmGreen" onclick="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MOBILE MENU (Sliding Panel) -->
+  <div id="mobileMenu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-40">
+    <div class="p-6 space-y-4 text-lg pt-20">
+      <a href="#" class="block text-farmGreen hover:text-farmYellow transition">Home</a>
+      <a href="#" class="block text-farmGreen hover:text-farmYellow transition">Product</a>
+      <a href="#" class="block text-farmGreen hover:text-farmYellow transition">Contact</a>
+      <hr class="my-2">
+      <a href="/downloads/agrihub-app.apk" download class="block bg-farmYellow text-white px-4 py-2 rounded hover:bg-yellow-500 transition">
+        Get App
+      </a>
+      <a href="login.html" class="block text-farmGreen font-medium hover:underline">
+        Sign In
+      </a>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 z-30 hidden" onclick="toggleMenu()"></div>
+  
+  <section class="relative w-full min-h-screen text-white">
+  <!-- Background image -->
+  <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('https://images.pexels.com/photos/2886937/pexels-photo-2886937.jpeg');">
+    <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-green-900/50"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 container mx-auto px-6 py-24 flex flex-col md:flex-row items-center justify-between min-h-screen">
+    
+    <!-- LEFT COLUMN -->
+    <div class="w-full md:w-1/2 text-left space-y-6">
+      <h5 class="text-lg text-white font-semibold uppercase">Welcome to AgriHub</h5>
+      <h1 class="text-4xl md:text-5xl font-extrabold" style="color: #FFF212;">Your Digital Farm Companion</h1>
+      
+      <h2 class="text-2xl md:text-3xl font-semibold flex items-center">
+        <span class="text-farmGreen">Empowering</span>
+        <span id="typewriter" class="ml-2 text-white whitespace-nowrap"></span>
+      </h2>
+
+      <p class="text-base md:text-lg max-w-xl text-white/90 leading-relaxed">
+        AgriHub connects farmers, markets, and innovations to drive sustainable agriculture. From product discovery to digital farm management, we've got you covered.
+      </p>
+
+      <!-- Buttons -->
+      <div class="flex flex-wrap gap-4 pt-4">
+        <a href="#products" class="bg-lime-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-lime-700 transition">
+          Explore Products
+        </a>
+        <a href="/downloads/agrihub-app.apk" download class="bg-yellow-400 text-green-900 px-6 py-3 rounded-lg shadow-lg hover:bg-yellow-500 transition">
+          Get App
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN (Image or Illustration) -->
+    <div class="hidden md:block w-full md:w-1/2">
+      <img src="https://images.pexels.com/photos/1879304/pexels-photo-1879304.jpeg" alt="Farm Tech" class="w-full rounded-xl shadow-lg"/>
+    </div>
+  </div>
+</section>
+<section class="bg-gray-100 py-16 px-6">
+  <div class="max-w-5xl mx-auto text-center">
+    <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Impact in Numbers</h2>
+    <p class="text-gray-700 text-lg max-w-2xl mx-auto mb-12">
+      From a small town in Kaduna state, Nigeria with less than 500 smallholder farmers to…
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-left">
+      <div class="flex items-start space-x-4">
+        <div class="text-3xl">🌾</div>
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">1,700,000</h3>
+          <p class="text-gray-600 text-sm">Grains Produced & Traded</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="text-3xl">👨‍🌾</div>
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">850,000</h3>
+          <p class="text-gray-600 text-sm">Farmers Onboarded</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="text-3xl">🏘️</div>
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">2,700</h3>
+          <p class="text-gray-600 text-sm">Communities Reached</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="text-3xl">🌱</div>
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">420,000</h3>
+          <p class="text-gray-600 text-sm">Hectares Cultivated</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="text-3xl">🧑‍🔧</div>
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">9000</h3>
+          <p class="text-gray-600 text-sm">Jobs Created</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="text-3xl">🏚️</div>
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">225,000MT</h3>
+          <p class="text-gray-600 text-sm">Storage Acquired</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-4">
+        <div class="text-3xl">🏢</div>
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">470</h3>
+          <p class="text-gray-600 text-sm">Warehouses Available</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-white py-20 px-6">
+  <div class="max-w-6xl mx-auto">
+    <!-- Text and Image -->
+    <div class="flex flex-col md:flex-row items-center gap-12">
+      <div class="md:w-1/2">
+        <img src="https://images.unsplash.com/photo-1590080877032-4ca1bc8b07de" 
+             alt="Farmers working" 
+             class="rounded-2xl shadow-lg w-full object-cover h-80">
+      </div>
+      <div class="md:w-1/2">
+        <h2 class="text-3xl font-bold text-green-900 mb-4">Who We Are</h2>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          AgriHub is a digital platform committed to empowering smallholder farmers 
+          through access to markets, tools, and technology. From our humble beginnings 
+          in Kaduna to a national movement, our goal is to revolutionize agriculture 
+          across Nigeria and beyond.
+        </p>
+      </div>
+    </div>
+
+    <!-- Video Card -->
+    <div class="mt-16">
+      <div class="relative w-full h-64 rounded-2xl overflow-hidden shadow-lg">
+        <video controls poster="https://images.unsplash.com/photo-1542831371-29b0f74f9713"
+               class="w-full h-full object-cover">
+          <source src="your-video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="bg-[#F9FAF9] py-16 px-6 text-center">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-3xl font-bold text-gray-900 mb-4">How We Help</h2>
+    <p class="text-gray-700 text-lg">
+      We don't only support smallholder farmers, we enable the entire agriculture value chain.
+    </p>
+  </div>
+
+  <div class="mt-12 space-y-12 max-w-2xl mx-auto">
+    <!-- Food Producers -->
+    <div>
+      <img src="your-icon-url.svg" alt="Food Producers" class="w-12 h-12 mx-auto mb-4" />
+      <h3 class="text-xl font-semibold text-gray-900">Food Producers</h3>
+      <p class="text-gray-700 mt-2">
+        We empower smallholder farmers with quality inputs and more to achieve optimum yield,
+        profitable returns & lower poverty rates, while ensuring the required food supply.
+      </p>
+    </div>
+
+    <!-- Food Financiers -->
+    <div>
+      <img src="your-icon-url.svg" alt="Food Financiers" class="w-12 h-12 mx-auto mb-4" />
+      <h3 class="text-xl font-semibold text-gray-900">Food Financiers</h3>
+      <p class="text-gray-700 mt-2">
+        We provide credible financing channels and visibility into smallholder farmer operations
+        towards achieving zero hunger, job creation, economic growth, social & financial inclusion.
+      </p>
+    </div>
+
+    <!-- Food Processors & Consumers -->
+    <div>
+      <img src="your-icon-url.svg" alt="Food Processors" class="w-12 h-12 mx-auto mb-4" />
+      <h3 class="text-xl font-semibold text-gray-900">Food Processors & Consumers</h3>
+      <p class="text-gray-700 mt-2">
+        We are a reliable partner of choice for delivery of quality & healthy produce to meet
+        increasing consumer demands and achieve food security.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Products Section -->
+<!-- Products Section -->
+<section class="mt-12">
+  <h2 class="text-3xl font-bold mb-6">Our <span class="font-light">Products</span></h2>
+  <div id="products-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+    <!-- Products will be injected here by JS -->
+  </div>
+</section>
+
+<!-- Blog Section -->
+<section class="mt-16">
+  <h2 class="text-3xl font-bold mb-6">Latest <span class="font-light">Articles</span></h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="bg-white rounded-xl shadow hover:shadow-lg transition-all">
+      <img src="images/blog1.jpg" alt="Blog 1" class="w-full h-40 object-cover rounded-t-xl">
+      <div class="p-4">
+        <h3 class="text-lg font-semibold mb-2">Sustainable Farming Practices</h3>
+        <p class="text-sm text-gray-600 mb-3">Learn how modern farmers are improving yield while protecting the environment.</p>
+        <a href="#" class="text-green-600 font-semibold text-sm hover:underline">Read More</a>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow hover:shadow-lg transition-all">
+      <img src="images/blog2.jpg" alt="Blog 2" class="w-full h-40 object-cover rounded-t-xl">
+      <div class="p-4">
+        <h3 class="text-lg font-semibold mb-2">Best Agro Inputs in 2025</h3>
+        <p class="text-sm text-gray-600 mb-3">Discover the top agro-chemical and bio-fertilizer options for Nigerian farms.</p>
+        <a href="#" class="text-green-600 font-semibold text-sm hover:underline">Read More</a>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow hover:shadow-lg transition-all">
+      <img src="images/blog3.jpg" alt="Blog 3" class="w-full h-40 object-cover rounded-t-xl">
+      <div class="p-4">
+        <h3 class="text-lg font-semibold mb-2">How to Raise Healthy Chicks</h3>
+        <p class="text-sm text-gray-600 mb-3">A beginner’s guide to poultry nutrition, housing, and disease prevention.</p>
+        <a href="#" class="text-green-600 font-semibold text-sm hover:underline">Read More</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- CTA Section -->
+<section class="mt-20 bg-green-600 text-white p-10 rounded-xl text-center">
+  <h2 class="text-3xl font-bold mb-4">Ready to Grow Your Farm?</h2>
+  <p class="text-lg mb-6">Join thousands of smart farmers accessing the best agro-products at affordable prices.</p>
+  <a href="register.html" class="bg-white text-green-600 font-semibold px-6 py-3 rounded shadow hover:bg-gray-100 transition">Get Started</a>
+</section>
+
+
+<!-- Contact Section -->
+<section class="mt-20 bg-white p-8 rounded-xl shadow">
+  <h2 class="text-3xl font-bold mb-4">Get In Touch</h2>
+  <p class="text-gray-600 mb-6">Have questions or need help? Reach out and we'll respond quickly.</p>
+  <form id="contactForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <input type="text" placeholder="Full Name" class="border border-gray-300 rounded px-4 py-2 w-full" required>
+    <input type="email" placeholder="Email Address" class="border border-gray-300 rounded px-4 py-2 w-full" required>
+    <textarea placeholder="Your Message" class="md:col-span-2 border border-gray-300 rounded px-4 py-2 w-full h-32" required></textarea>
+    <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded hover:bg-green-700 md:col-span-2 w-fit">Send Message</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-100 mt-20 pt-10 pb-6 border-t border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-700">
+    
+    <!-- Logo / About -->
+    <div>
+      <h3 class="text-2xl font-bold mb-3">
+        <span class="text-green-600">Agri</span><span style="color: #FFF212;">Hub</span>
+      </h3>
+      <p>Your trusted platform for agro-chemicals, livestock, tools, and planting materials. Empowering farmers across Nigeria.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+      <h4 class="text-lg font-semibold mb-3">Quick Links</h4>
+      <ul class="space-y-2">
+        <li><a href="index.html" class="hover:text-green-600 transition">Home</a></li>
+        <li><a href="about.html" class="hover:text-green-600 transition">About Us</a></li>
+        <li><a href="products.html" class="hover:text-green-600 transition">Products</a></li>
+        <li><a href="blog.html" class="hover:text-green-600 transition">Blog</a></li>
+        <li><a href="contact.html" class="hover:text-green-600 transition">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div>
+      <h4 class="text-lg font-semibold mb-3">Contact</h4>
+      <ul class="space-y-2">
+        <li>Email: support@agriahub.com</li>
+        <li>Phone: +234 800 123 4567</li>
+        <li>Location: Lagos, Nigeria</li>
+        <li class="mt-2">
+          <div class="flex space-x-3">
+            <!-- Placeholder icons -->
+            <a href="#" class="text-gray-500 hover:text-green-600"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-500 hover:text-green-600"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-500 hover:text-green-600"><i class="fab fa-instagram"></i></a>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Bottom Line -->
+  <div class="text-center mt-10 text-xs text-gray-500">
+    &copy; 2025 <span class="text-green-600">Agria</span><span style="color: #FFF212;">Hub</span>. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    alert("Thanks for contacting us! We'll respond shortly.");
+    e.target.reset();
+  });
+</script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("mobileMenu");
+      const overlay = document.getElementById("overlay");
+
+      if (menu.classList.contains("-translate-x-full")) {
+        menu.classList.remove("-translate-x-full");
+        overlay.classList.remove("hidden");
+      } else {
+        menu.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
+      }
+    }
+  </script>
+<script src="script.js"> </script>
+<script src="auth.js"></script>
+</body>
+</html>

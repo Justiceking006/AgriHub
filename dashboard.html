@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AgriHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        window.createClient = supabase.createClient;
+    </script>
+    <script src="auth.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        farmGreen: '#1B5E20',
+                        farmYellow: '#FFC107',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-farmGreen">Agri<span class="text-farmYellow">Hub</span></span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="dashboard.html" class="text-farmGreen font-medium hover:underline">Dashboard</a>
+                    <a href="shop.html" class="text-farmGreen font-medium hover:underline">Shop</a>
+                    <a href="product.html" class="text-farmGreen font-medium hover:underline">Product</a>
+                    <a href="blog.html" class="text-farmGreen font-medium hover:underline">Blog</a>
+                    <a href="login.html" class="text-farmGreen font-medium hover:underline">Login</a>
+                    <a href="signup.html" class="text-farmGreen font-medium hover:underline">Sign Up</a>
+                    <button onclick="signOut()" class="bg-farmGreen text-white px-4 py-2 rounded hover:bg-green-700">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- Welcome Section -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Welcome back, <span data-user-name>User</span>!</h1>
+            <p class="text-gray-600">Email: <span data-user-email></span></p>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Profile Information</h2>
+            <form id="profileForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="fullName" name="full_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <input type="tel" id="phoneNumber" name="phone_number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Location</label>
+                        <input type="text" id="location" name="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Website</label>
+                        <input type="url" id="website" name="website" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Bio</label>
+                    <textarea id="bio" name="bio" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50"></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-farmGreen text-white px-4 py-2 rounded hover:bg-green-700">
+                        Update Profile
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sales Page: Product Upload Form -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Upload Product Listing</h2>
+            <form id="productForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Product Name</label>
+                        <input type="text" id="productName" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Price (₦)</label>
+                        <input type="number" id="productPrice" name="price" required min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Quantity</label>
+                        <input type="number" id="productQuantity" name="quantity" required min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">WhatsApp Number</label>
+                        <input type="tel" id="productWhatsapp" name="whatsapp" required pattern="[0-9]{10,15}" placeholder="e.g. 2348012345678" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea id="productDescription" name="description" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-farmGreen focus:ring focus:ring-farmGreen focus:ring-opacity-50"></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-farmGreen text-white px-4 py-2 rounded hover:bg-green-700">Upload Product</button>
+                </div>
+            </form>
+        </div>
+        <!-- Sales Page: Product List -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Your Products</h2>
+            <div id="dashboardProducts" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+    </main>
+    <script src="products.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardProducts();
+        });
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const product = {
+                name: form.name.value.trim(),
+                price: parseFloat(form.price.value),
+                quantity: parseInt(form.quantity.value),
+                description: form.description.value.trim(),
+                whatsapp: form.whatsapp.value.trim(),
+                created_at: new Date().toISOString()
+            };
+            // Basic validation
+            if (!product.name || isNaN(product.price) || product.price < 1 || isNaN(product.quantity) || product.quantity < 1 || !/^\d{10,15}$/.test(product.whatsapp)) {
+                alert('Please fill all fields correctly.');
+                return;
+            }
+            const error = await saveProduct(product);
+            if (error) {
+                alert('Error uploading product: ' + error.message);
+            } else {
+                alert('Product uploaded!');
+                form.reset();
+                loadDashboardProducts();
+            }
+        });
+    </script>
+    <script>
+        // Protect this route
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Load profile data
+            const { data: profile } = await getProfile();
+            if (profile) {
+                document.getElementById('fullName').value = profile.full_name || '';
+                document.getElementById('phoneNumber').value = profile.phone_number || '';
+                document.getElementById('location').value = profile.location || '';
+                document.getElementById('website').value = profile.website || '';
+                document.getElementById('bio').value = profile.bio || '';
+            }
+        });
+
+        // Handle profile form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const profileData = Object.fromEntries(formData.entries());
+            
+            const { error } = await updateProfile(profileData);
+            if

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Sign Up - AgriHub</title>    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        farmGreen: '#1B5E20',
+                        farmYellow: '#FFC107',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        window.createClient = supabase.createClient;
+    </script>
+    <script src="auth.js">
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-md w-96">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-farmGreen">Join AgriHub</h2>
+                <p class="text-gray-600">Create your account</p>
+            </div>            <form id="signupForm" autocomplete="off">
+  <!-- Stage 1: Basic Info -->
+  <div id="stage1">
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email Address</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" name="email" type="email" required placeholder="Enter your email">
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" required minlength="6" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$" title="Password must be at least 6 characters long and contain both letters and numbers" placeholder="Choose a strong password">
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="full_name">Full Name</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="full_name" name="full_name" type="text" placeholder="Your full name">
+    </div>
+    <div class="flex justify-end mb-6">
+      <button type="button" id="toStage2" class="bg-farmGreen text-white px-4 py-2 rounded">Next</button>
+    </div>
+  </div>
+  <!-- Stage 2: Profile Details -->
+  <div id="stage2" class="hidden">
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="phone_number">Phone Number</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phone_number" name="phone_number" type="tel" placeholder="Your phone number">
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="address">Address</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="address" name="address" type="text" placeholder="Your address">
+    </div>
+   <!--, 
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="avatar_url">Avatar URL</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="avatar_url" name="avatar_url" type="url" placeholder="Link to your avatar image">
+    </div> Optional avatar upload can be implemented later
+    
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="bio">Bio</label>
+      <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bio" name="bio" rows="2" placeholder="Tell us about yourself"></textarea>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="location">Location</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="location" name="location" type="text" placeholder="Your location">
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="website">Website</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="website" name="website" type="url" placeholder="Your website">
+    </div>
+     -->
+    <div class="flex justify-between mb-6">
+      <button type="button" id="backTo1" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Back</button>
+      <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Create Account</button>
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="text-gray-600">Already have an account?
+      <a href="login.html" class="text-farmGreen hover:text-green-700">Sign in</a>
+    </p>
+  </div>
+</form>
+<script>
+  const stage1 = document.getElementById('stage1');
+  const stage2 = document.getElementById('stage2');
+  const toStage2 = document.getElementById('toStage2');
+  const backTo1 = document.getElementById('backTo1');
+  const signupForm = document.getElementById('signupForm');
+  // Store values to persist between stages
+  const formState = {};
+  toStage2.onclick = function() {
+    // Validate stage 1
+    const email = signupForm.email.value.trim();
+    const password = signupForm.password.value;
+    const fullName = signupForm.full_name.value.trim();
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) { alert('Valid email is required.'); return; }
+    if (!password || password.length < 6 || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password)) { alert('Password must be at least 6 characters and contain both letters and numbers.'); return; }
+    if (!fullName) { alert('Full name is required.'); return; }
+    formState.email = email;
+    formState.password = password;
+    formState.full_name = fullName;
+    stage1.classList.add('hidden');
+    stage2.classList.remove('hidden');
+  }
+  backTo1.onclick = function() {
+    stage1.classList.remove('hidden');
+    stage2.classList.add('hidden');
+  }
+  signupForm.onsubmit = async function(e) {
+    e.preventDefault();
+    // Collect all form data
+    const formData = new FormData(signupForm);
+    const data = Object.fromEntries(formData);
+    try {
+      // 1. Sign up the user
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+      });
+      if (signUpError) {
+        if (signUpError.status === 429) {
+          alert('Too many signup attempts. Please wait a minute and try again.');
+        } else {
+          alert('Error creating account: ' + signUpError.message);
+        }
+        return;
+      }
+      // 2. Sign in the user to get a valid JWT for RLS
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password
+      });
+      if (signInError) {
+        alert('Sign in failed: ' + signInError.message);
+        return;
+      }
+      const userId = signInData.user && signInData.user.id;
+      if (!userId) {
+        alert('User ID missing after sign in.');
+        return;
+      }
+      // 3. Insert profile info into user_profiles only if it doesn't exist
+      const { data: existingProfile, error: selectError } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .eq('id', userId)
+        .single();
+      if (!existingProfile) {
+        const { error: profileError } = await supabase
+          .from('user_profiles')
+          .insert([{ 
+            id: userId,
+            email: data.email,
+            full_name: data.full_name,
+            phone_number: data.phone_number,
+            address: data.address,
+            avatar_url: data.avatar_url,
+            bio: data.bio,
+            location: data.location,
+            website: data.website,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }]);
+        if (profileError) {
+          alert('Error saving profile information: ' + profileError.message);
+          return;
+        }
+      } // else: profile already exists, skip insert
+      alert('Account created successfully!');
+      window.location.href = 'index.html';
+    } catch (err) {
+      alert('Unexpected error: ' + (err.message || err));
+    }
+  }
+</script>
+        </div>
+    </div>
+</body>
+</html>
