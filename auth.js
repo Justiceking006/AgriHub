@@ -102,7 +102,7 @@ async function signIn(email, password) {
 
     // After successful login, redirect using the correct GitHub Pages project path (with leading slash, no domain)
     updateUIForAuthenticatedUser(data.user);
-    window.location.href = '/AgriHub/dashboard.html';
+    window.location.href = 'dashboard.html';
   } catch (error) {
     alert(error.message || 'Login failed');
   } finally {
