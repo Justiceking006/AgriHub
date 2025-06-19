@@ -100,8 +100,9 @@ async function signIn(email, password) {
     }
     localStorage.setItem('user', JSON.stringify(data.user));
 
+    // After successful login, redirect using the correct GitHub Pages project path
     updateUIForAuthenticatedUser(data.user);
-    window.location.href = '/dashboard.html';
+    window.location.href = '/AgriHub/dashboard.html';
   } catch (error) {
     alert(error.message || 'Login failed');
   } finally {

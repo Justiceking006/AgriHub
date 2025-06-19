@@ -1,20 +1,15 @@
 // products.js
-
-const SUPABASE_URL = window?.SUPABASE_URL || 'https://vjjqsbupupmdfqulidpr.supabase.co';
-const SUPABASE_ANON_KEY = window?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqanFzYnVwdXBtZGZxdWxpZHByIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyNTM1MTgsImV4cCI6MjA2NTgyOTUxOH0.wNGR-blLYp6r3d0_DF2-7ODz-Zez04bRJBkGBawc_Z8';
-const productsSupabase = window.createClient
-  ? window.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Use the global supabase client from auth.js, do not redeclare SUPABASE_URL or SUPABASE_ANON_KEY
 
 // Save product to Supabase
 async function saveProduct(product) {
-  const { error } = await productsSupabase.from('products').insert([product]);
+  const { error } = await supabase.from('products').insert([product]);
   return error;
 }
 
 // Fetch all products
 async function fetchProducts() {
-  const { data, error } = await productsSupabase.from('products').select('*').order('created_at', { ascending: false });
+  const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
   return { data, error };
 }
 
@@ -53,3 +48,8 @@ async function loadShopProducts() {
   const { data, error } = await fetchProducts();
   renderProducts(data, 'shopProducts');
 }
+
+// Expose functions globally
+window.saveProduct = saveProduct;
+window.loadDashboardProducts = loadDashboardProducts;
+window.loadShopProducts = loadShopProducts;
